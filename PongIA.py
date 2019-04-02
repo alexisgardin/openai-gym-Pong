@@ -31,8 +31,7 @@ def callback(obs_t, obs_tp1, action, rew, done, info):
             action = 1
         if action is 3 or action is 5 :
             action = 2
-        if action is not 0 : 
-            data.append((crop(cv2.cvtColor(obs_t, cv2.COLOR_BGR2GRAY), (0, 35, 160, 195)), action))
+        data.append((crop(cv2.cvtColor(obs_t, cv2.COLOR_BGR2GRAY), (0, 35, 160, 195)), action))
         #print(data)
         #print(len(data))
     previous = obs_t
