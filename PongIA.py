@@ -27,9 +27,14 @@ def callback(obs_t, obs_tp1, action, rew, done, info):
     global previous
     global data
     if obs_t is not previous:
-        data.append((crop(cv2.cvtColor(obs_t, cv2.COLOR_BGR2GRAY), (0, 35, 160, 195)), action))
-        # print(data[0][0].shape)
-        print(len(data))
+        if action is 2 or action is 4 :
+            action = 1
+        if action is 3 or action is 5 :
+            action = 2
+        if action is not 0 : 
+            data.append((crop(cv2.cvtColor(obs_t, cv2.COLOR_BGR2GRAY), (0, 35, 160, 195)), action))
+        #print(data)
+        #print(len(data))
     previous = obs_t
     # print(obs_t.shape)
 
@@ -38,7 +43,19 @@ if __name__ == '__main__':
     data = []
     previous = 0
     env = gym.make("Pong-v0")
-    play.play(env, zoom=3, callback=callback)
+    play.play(env, zoom=3, callback=callback, fps=8)
+    '''
+    for i_episode in range(20):
+        observation = env.reset()
+        for t in range(1000):
+            env.render()
+            action = env.action_space.sample()
+            #print(action)
+            observation, reward, done, info = env.step(action)
+            callback(observation, observation, action, reward, done, info)
+            if done:
+                print("Episode finished after {} timesteps".format(t+1))
+                break'''
     res = int(input("Le run est bon ? 1 - Oui / 2 - Non"))
     if res is 1:
         with open('save/run-' + str(uuid.uuid4()) + '.pickle', 'wb') as handle:
